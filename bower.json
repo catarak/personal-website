@@ -1,0 +1,13 @@
+{
+  "name": "cassie-tarakajian-site",
+  "version": "0.0.1",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "components"
+  ],
+  "dependencies": {
+    "modernizr": "~2.8.2",
+    "jquery": "~2.1.1"
+  }
+}

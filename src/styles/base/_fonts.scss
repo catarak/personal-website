@@ -1,0 +1,52 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet);
+@import url(https://fonts.googleapis.com/css?family=Inconsolata:400,700);
+
+@font-face {
+  font-family: 'icomoon';
+  src:url('fonts/icomoon.eot?ib8jdm');
+  src:url('fonts/icomoon.eot?ib8jdm#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?ib8jdm') format('truetype'),
+    url('fonts/icomoon.woff?ib8jdm') format('woff'),
+    url('fonts/icomoon.svg?ib8jdm#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+$icons: (
+  mail: "\e800",
+  instagram: "\e801",
+  twitter: "\e802",
+  youtube: "\e803",
+  vimeo: "\e804",
+  github: "\e805",
+  tumblr: "\e806",
+  soundcloud: "\e807",
+  stackoverflow: "\e808"
+);
+
+@mixin icon($icon: false, $position: before, $styles: true, $replace: false) {
+  @if $replace {
+    font-size: 0;
+  }
+  @if $position == both {
+    $position: 'before, &:after';
+  }
+  // Either a :before or :after pseudo-element, or both, defaulting to :before
+  &:#{$position} {
+    @if $icon {
+      // A particular icon has been specified
+      content: "#{map-get($icons, $icon)}";
+    }
+    @if $styles {
+      // Supportive icon styles required
+      speak: none;
+      font-style: normal;
+      font-weight: normal;
+      font-family: 'icomoon';
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    // Include any extra rules supplied for the pseudo-element
+    @content;
+  }
+}

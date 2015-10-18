@@ -51,7 +51,7 @@ var positions = require('./positions.js');
   scene = new THREE.Scene();
   scene.fog = new THREE.FogExp2(fogHex, fogDensity);
 
-  container = document.createElement('div');
+  container = document.getElementById('animation-container');
   document.body.appendChild(container);
     document.body.style.margin = 0;
     document.body.style.overflow = 'hidden';
@@ -84,7 +84,7 @@ var positions = require('./positions.js');
 
     materials[i] = new THREE.PointsMaterial({
       size:size,
-      map: THREE.ImageUtils.loadTexture('particle3.png'),
+      map: THREE.ImageUtils.loadTexture('images/particle3.png'),
       transparent: true,
     });
 
@@ -117,7 +117,7 @@ var positions = require('./positions.js');
   function animate() {
     requestAnimationFrame(animate);
     render();
-    stats.update();
+    //stats.update();
   }
 
   function render() {

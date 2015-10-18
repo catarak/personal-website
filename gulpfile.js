@@ -18,7 +18,7 @@ var buffer = require('vinyl-buffer');
 var source = require('vinyl-source-stream');
 var filter = require('gulp-filter');
 
-gulp.task('browser-sync', ['bower', 'scripts', 'styles', 'images', 'nodemon'], function() {
+gulp.task('browser-sync', ['bower', 'scripts', 'styles', 'images', 'fonts', 'nodemon'], function() {
   browserSync.init(null, {
     proxy: "http://localhost:3000",
         files: ["dist/**/*.*"],
@@ -53,6 +53,11 @@ gulp.task('images', function(){
     .pipe(gulp.dest('dist/images/'));
 });
 
+gulp.task('fonts', function() {
+  gulp.src('src/fonts/**/*')
+  .pipe(gulp.dest('dist/styles/fonts'));
+});
+
 gulp.task('styles', function(){
   gulp.src(['src/styles/**/*.scss'])
     .pipe(plumber({
@@ -83,27 +88,13 @@ gulp.task('scripts', function(){
         console.log(error.message);
         this.emit('end');
     }}))
+    //   .pipe(jshint())
+    //   .pipe(jshint.reporter('default'))
     .pipe(gulp.dest('dist/scripts/'))
     .pipe(rename({suffix: '.min'}))
     .pipe(uglify())
     .pipe(gulp.dest('dist/scripts/'))
     .pipe(browserSync.reload({stream:true}))
-
-  // return gulp.src('src/scripts/sketch.js')
-  //   .pipe(browserified)
-  //   .pipe(plumber({
-  //     errorHandler: function (error) {
-  //       console.log(error.message);
-  //       this.emit('end');
-  //   }}))
-  //   .pipe(jshint())
-  //   .pipe(jshint.reporter('default'))
-  //   .pipe(concat('main.js'))
-  //   .pipe(gulp.dest('dist/scripts/'))
-  //   .pipe(rename({suffix: '.min'}))
-  //   .pipe(uglify())
-  //   .pipe(gulp.dest('dist/scripts/'))
-  //   .pipe(browserSync.reload({stream:true}))
 });
 
 

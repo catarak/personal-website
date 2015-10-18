@@ -1,0 +1,32 @@
+.social__twitter {
+  @include icon("twitter", before, true, true) {
+    font-size: #{32 / $base-font-size}rem;
+  }
+  text-decoration: none;
+  color: white;
+  &:hover {
+    color: rgba(255, 255, 255, 0.7);
+  }
+}
+
+.social__github {
+  @include icon("github", before, true, true) {
+    font-size: #{32 / $base-font-size}rem;
+  }
+  text-decoration: none;
+  color: white;
+  &:hover {
+    color: rgba(255, 255, 255, 0.7);
+  }
+}
+
+.social__mail {
+  @include icon("mail", before, true, true) {
+    font-size: #{32 / $base-font-size}rem;
+  }
+  text-decoration: none;
+  color: white;
+  &:hover {
+    color: rgba(255, 255, 255, 0.7);
+  }
+}

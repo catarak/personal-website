@@ -11,8 +11,14 @@ var minifycss = require('gulp-minify-css');
 var sass = require('gulp-sass');
 var browserSync = require('browser-sync');
 var nodemon = require('gulp-nodemon');
+var mainBowerFiles = require('main-bower-files');
+var browserify = require('browserify');
+var transform = require('vinyl-transform');
+var buffer = require('vinyl-buffer');
+var source = require('vinyl-source-stream');
+var filter = require('gulp-filter');
 
-gulp.task('browser-sync', ['scripts', 'styles', 'images', 'nodemon'], function() {
+gulp.task('browser-sync', ['bower', 'scripts', 'styles', 'images', 'nodemon'], function() {
   browserSync.init(null, {
     proxy: "http://localhost:3000",
         files: ["dist/**/*.*"],
@@ -64,20 +70,50 @@ gulp.task('styles', function(){
 });
 
 gulp.task('scripts', function(){
-  return gulp.src('src/scripts/**/*.js')
+  var b = browserify({
+    entries: './src/scripts/sketch.js',
+    debug: true
+  });
+
+  return b.bundle()
+    .pipe(source('main.js'))
+    .pipe(buffer())
     .pipe(plumber({
       errorHandler: function (error) {
         console.log(error.message);
         this.emit('end');
     }}))
-    .pipe(jshint())
-    .pipe(jshint.reporter('default'))
-    .pipe(concat('main.js'))
     .pipe(gulp.dest('dist/scripts/'))
     .pipe(rename({suffix: '.min'}))
     .pipe(uglify())
     .pipe(gulp.dest('dist/scripts/'))
     .pipe(browserSync.reload({stream:true}))
+
+  // return gulp.src('src/scripts/sketch.js')
+  //   .pipe(browserified)
+  //   .pipe(plumber({
+  //     errorHandler: function (error) {
+  //       console.log(error.message);
+  //       this.emit('end');
+  //   }}))
+  //   .pipe(jshint())
+  //   .pipe(jshint.reporter('default'))
+  //   .pipe(concat('main.js'))
+  //   .pipe(gulp.dest('dist/scripts/'))
+  //   .pipe(rename({suffix: '.min'}))
+  //   .pipe(uglify())
+  //   .pipe(gulp.dest('dist/scripts/'))
+  //   .pipe(browserSync.reload({stream:true}))
+});
+
+
+gulp.task('bower', function() {
+    return gulp.src(mainBowerFiles().filter(function (f) { return f.substr(-2) === 'js'; }))
+        .pipe(concat('vendor.js'))
+        .pipe(gulp.dest('dist/scripts'))
+        .pipe(rename({suffix: '.min'}))
+        .pipe(uglify())
+        .pipe(gulp.dest('dist/scripts/'));
 });
 
 gulp.task('default', ['browser-sync'], function(){

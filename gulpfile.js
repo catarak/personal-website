@@ -112,3 +112,5 @@ gulp.task('default', ['browser-sync'], function(){
   gulp.watch("src/scripts/**/*.js", ['scripts']);
   gulp.watch("*.html", ['bs-reload']);
 });
+
+gulp.task('production', ['bower', 'scripts', 'styles', 'images', 'fonts']);

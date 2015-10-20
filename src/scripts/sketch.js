@@ -1,6 +1,7 @@
 'use strict';
 
 var positions = require('./positions.js');
+var positionsLast = require('./positions_lastname.js');
   
   var scene, camera, renderer;
 
@@ -26,12 +27,15 @@ var positions = require('./positions.js');
     var SPRING_STRENGTH   = 0.0005;
     var DAMPEN            = 0.998;
 
+  var CAMERA_MAX = 700;
+
   init();
   animate();
 
   function init() {
 
-    HEIGHT = window.innerHeight;
+    //HEIGHT = window.innerHeight;
+    HEIGHT = 230;
     WIDTH = window.innerWidth;
     windowHalfX = WIDTH / 2;
     windowHalfY = HEIGHT / 2;
@@ -52,25 +56,34 @@ var positions = require('./positions.js');
   scene.fog = new THREE.FogExp2(fogHex, fogDensity);
 
   container = document.getElementById('animation-container');
-  document.body.appendChild(container);
+  //document.body.appendChild(container);
     document.body.style.margin = 0;
     document.body.style.overflow = 'hidden';
 
   geometry = new THREE.Geometry();
 
-  particleCount = 10000; 
+  particleCount = 12000; 
 
   for (i = 0; i < particleCount; i++) {
     var j = i % positions.length;
     var vertex = new THREE.Vector3();
 
-    vertex.x = positions[j].x -400 + Math.random()*20 - 10;
-    vertex.y = Math.abs(positions[j].y) + Math.random()*20 - 10;
+    vertex.x = 2*positions[j].x -720 + Math.random()*40 - 20;
+    vertex.y = Math.abs(2*positions[j].y) - 170 + Math.random()*40 - 20;
     vertex.z = Math.random() * 100 + 1200;
-    vertex.randomOffset = Math.random()*2*Math.PI;
+    //vertex.randomOffset = Math.random()*2*Math.PI;
 
     geometry.vertices.push(vertex);
+
+    // var k = i % positionsLast.length
+    // var vertexLast = new THREE.Vector3();
+    // vertexLast.x = 2*positionsLast[k].x -1220 + Math.random()*40 - 20;
+    // vertexLast.y = Math.abs(2*positionsLast[k].y) -450 + Math.random()*40 - 20;
+    // vertexLast.z = Math.random() * 100 + 1200;
+    // geometry.vertices.push(vertexLast);
+
   }
+
   geometry.dynamic = true;
 
 
@@ -123,12 +136,14 @@ var positions = require('./positions.js');
   function render() {
     var time = Date.now() * 0.00005;
 
-    camera.position.x += (mouseX - camera.position.x) * 0.05;
-    camera.position.y += (- mouseY - camera.position.y) * 0.05;
+    //camera.position.x += (mouseX - camera.position.x) * 0.01;
+    //camera.position.y += (- mouseY - camera.position.y) * 0.01;
+    currentTime = new Date().getTime();
+    camera.position.x = CAMERA_MAX * Math.sin(currentTime/2000);
 
     camera.lookAt(scene.position);
     //checkIntersection();
-    updateVertices();
+    //updateVertices();
     particles.geometry.verticesNeedUpdate = true;
 
     renderer.render(scene, camera);   
@@ -173,12 +188,19 @@ var positions = require('./positions.js');
 
   function onWindowResize() {
 
+    WIDTH = window.innerWidth;
     windowHalfX = window.innerWidth / 2;
-    windowHalfY = window.innerHeight / 2;
 
-    camera.aspect = window.innerWidth / window.innerHeight;
+    if (window.innerHeight < HEIGHT) {
+      windowHalfY = window.innerHeight / 2;
+    }
+    else {
+      windowHalfY = HEIGHT / 2;
+    }
+
+    camera.aspect = WIDTH / HEIGHT;
     camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(WIDTH, HEIGHT);
   }
 
 
@@ -208,7 +230,7 @@ var positions = require('./positions.js');
     for (var i = 0; i < particles.geometry.vertices.length; i++) {
       var vertex = particles.geometry.vertices[i];
       var time = new Date().getTime() / 1000;
-      vertex.add(new THREE.Vector3(0.5*Math.cos(2*time+vertex.randomOffset), 0.5*Math.sin(2*time+vertex.randomOffset), 0));
+      vertex.add(new THREE.Vector3(0.4*Math.cos(time+vertex.randomOffset), 0.4*Math.sin(time+vertex.randomOffset), 0));
     }
   }
 

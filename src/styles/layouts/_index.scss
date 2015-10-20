@@ -7,6 +7,7 @@
   &:hover {
     color: rgba(255, 255, 255, 0.7);
   }
+  padding: 0 #{10 / $base-font-size}rem;
 }
 
 .social__github {
@@ -18,6 +19,7 @@
   &:hover {
     color: rgba(255, 255, 255, 0.7);
   }
+  padding: 0 #{10 / $base-font-size}rem;
 }
 
 .social__mail {
@@ -29,4 +31,24 @@
   &:hover {
     color: rgba(255, 255, 255, 0.7);
   }
+  padding: 0 #{10 / $base-font-size}rem;
+}
+
+.social {
+  padding: #{16 / $base-font-size}rem 0;
+  text-align: center;
+}
+
+.about__lastname {
+  text-align: center;
+  font-size: #{52 / $base-font-size}rem;
+  color: white;
+  margin: 0;
+}
+
+.about__byline {
+  font-family: Inconsolata, sans-serif;
+  text-align: center;
+  margin: 0;
+  padding: #{32 / $base-font-size}rem;
 }

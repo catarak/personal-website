@@ -1,7 +1,6 @@
 'use strict';
 
 var positions = require('./positions.js');
-var positionsLast = require('./positions_lastname.js');
   
   var scene, camera, renderer;
 
